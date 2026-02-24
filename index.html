@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Trainer Academy | PTA</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         brand: {
-                            DEFAULT: '#037BFF', /* Azul principal da marca */
-                            light: '#4DA3FF',   /* Tom mais claro para hover e brilhos */
-                            dark: '#0056B3'     /* Tom escuro para profundidade */
+                            DEFAULT: '#037BFF',
+                            light: '#4DA3FF',
+                            dark: '#0056B3',
+                            primary: '#037BFF'
+                        }
+                    },
+                    keyframes: {
+                        shimmer: {
+                            '100%': { transform: 'translateX(100%)' }
                         }
                     }
                 }
@@ -23,106 +32,166 @@
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        
-        /* Utilitários Glassmorphism */
-        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .glass-card:hover { border-color: rgba(3, 123, 255, 0.4); }
-        
-        /* Ocultar barra de rolagem onde necessário */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Background global texturizado (Grid de pontilhados/linhas) */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .parceiros-track {
+            animation: carousel-scroll 30s linear infinite;
+        }
+        @keyframes carousel-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .glass-card:hover {
+            border-color: rgba(3, 123, 255, 0.4);
+        }
+
         .bg-grid-pattern {
             background-image:
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 28px 28px;
         }
-        
-        /* Animações e Efeitos Globais */
-        .section-glow { box-shadow: 0 0 80px -20px rgba(3, 123, 255, 0.15); }
+
         @keyframes glow-pulse {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
         }
-        .glow-orb { animation: glow-pulse 8s ease-in-out infinite; }
+
+        .glow-orb {
+            animation: glow-pulse 8s ease-in-out infinite;
+        }
+
+        /* Classes para o Menu Lateral (Mobile) */
+        .mobile-menu-active {
+            transform: translateX(0) !important;
+        }
+        .overlay-active {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
     </style>
 </head>
+
 <body class="bg-slate-950 text-slate-300 antialiased overflow-x-hidden selection:bg-brand/30 selection:text-white relative">
-    
+
     <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-[1] opacity-80"></div>
-    
+
     <div class="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-brand/10 blur-[150px] rounded-full pointer-events-none z-0 glow-orb"></div>
     <div class="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-brand-dark/20 blur-[150px] rounded-full pointer-events-none z-0 glow-orb" style="animation-delay: -4s;"></div>
     <div class="fixed top-1/2 right-[-5%] w-[40%] h-[40%] bg-brand-light/5 blur-[120px] rounded-full pointer-events-none z-0"></div>
-    <div class="fixed bottom-1/3 left-[-8%] w-[35%] h-[35%] bg-brand/5 blur-[100px] rounded-full pointer-events-none z-0"></div>
 
-    <header class="relative z-50 w-full border-b border-white/5 bg-slate-950/80 backdrop-blur-md sticky top-0">
-        <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
-            
-            <a href="#" class="flex items-center gap-2 group">
-                <img src="img/logoPta.svg" alt="Personal Trainer Academy - PTA" class="h-9 md:h-10 w-auto object-contain" />
-            </a>
-            
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="#sobre" class="text-slate-300 hover:text-brand-light transition-colors">Sobre a Instituição</a>
+    <nav class="fixed top-6 left-0 right-0 z-50 px-4 md:px-0" data-aos="fade-down" data-aos-duration="1000">
+        <div class="container mx-auto max-w-6xl">
+            <div class="relative flex items-center justify-between px-6 py-3 rounded-full bg-[#030912]/70 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] transition-all duration-300 hover:border-brand-primary/30 hover:bg-[#030912]/80">
                 
-                <div class="relative group py-4">
-                    <button class="flex items-center gap-1.5 text-slate-300 hover:text-brand-light transition-colors focus:outline-none">
+                <a href="#" class="block hover:opacity-80 transition-opacity duration-300">
+                    <img src="img/logoPta.svg" alt="PTA Academy" class="h-10 md:h-12 w-auto">
+                </a>
+
+                <div class="hidden md:flex items-center gap-8 lg:gap-10">
+                    <a href="#sobre" class="text-xs font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-colors duration-300 relative group">
+                        Sobre
+                        <span class="absolute -bottom-2 left-1/2 w-0 h-0.5 bg-brand-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                    </a>
+
+                    <a href="#cursos" class="text-xs font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-colors duration-300 relative group">
                         Pós-Graduações
-                        <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-[-8px] w-80 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform origin-top scale-95 group-hover:scale-100 z-50">
-                        <div class="p-2 rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.7)] flex flex-col gap-1">
-                            <a href="https://ptadigital.com.br/power-trainer/" target="_blank" class="block p-3 rounded-xl hover:bg-brand/10 group/link transition-colors"><span class="block text-white font-semibold text-sm group-hover/link:text-brand-light transition-colors">Power Trainer</span></a>
-                            <a href="https://pos.personaltraineracademy.com.br/biomecanica-2026/" target="_blank" class="block p-3 rounded-xl hover:bg-brand/10 group/link transition-colors"><span class="block text-white font-semibold text-sm group-hover/link:text-brand-light transition-colors">Biomecânica</span></a>
-                            <a href="https://pos.personaltraineracademy.com.br/bodybuilding-2026/" target="_blank" class="block p-3 rounded-xl hover:bg-brand/10 group/link transition-colors"><span class="block text-white font-semibold text-sm group-hover/link:text-brand-light transition-colors">Bodybuilding</span></a>
-                            <a href="https://pos.personaltraineracademy.com.br/fisiologia-2026/" target="_blank" class="block p-3 rounded-xl hover:bg-brand/10 group/link transition-colors"><span class="block text-white font-semibold text-sm group-hover/link:text-brand-light transition-colors">Fisiologia</span></a>
-                            <a href="https://pos.personaltraineracademy.com.br/treinamento-funcional-2026/" target="_blank" class="block p-3 rounded-xl hover:bg-brand/10 group/link transition-colors"><span class="block text-white font-semibold text-sm group-hover/link:text-brand-light transition-colors">Treinamento Funcional</span></a>
-                            <a href="https://pos.personaltraineracademy.com.br/treinamento-feminino-2026/" target="_blank" class="block p-3 rounded-xl hover:bg-brand/10 group/link transition-colors"><span class="block text-white font-semibold text-sm group-hover/link:text-brand-light transition-colors">Treinamento Feminino</span></a>
-                            <a href="https://pos.personaltraineracademy.com.br/musculacao-e-periodizacao-avancada-2026/" target="_blank" class="block p-3 rounded-xl hover:bg-brand/10 group/link transition-colors"><span class="block text-white font-semibold text-sm group-hover/link:text-brand-light transition-colors">Musculação e Periodização Avançada</span></a>
-                        </div>
-                    </div>
+                        <span class="absolute -bottom-2 left-1/2 w-0 h-0.5 bg-brand-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                    </a>
+
+                    <a href="#imersoes" class="text-xs font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-colors duration-300 relative group">
+                        Imersões
+                        <span class="absolute -bottom-2 left-1/2 w-0 h-0.5 bg-brand-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                    </a>
+                    
+                    <a href="#depoimentos" class="text-xs font-bold uppercase tracking-[0.15em] text-gray-400 hover:text-white transition-colors duration-300 relative group">
+                        Alunos
+                        <span class="absolute -bottom-2 left-1/2 w-0 h-0.5 bg-brand-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                    </a>
                 </div>
 
-                <a href="#imersoes" class="text-slate-300 hover:text-brand-light transition-colors">Imersões</a>
-                <a href="#professores" class="text-slate-300 hover:text-brand-light transition-colors">Professores</a>
-            </nav>
+                <a href="https://wa.me/5511999999999" target="_blank" class="group relative hidden md:inline-flex items-center justify-center overflow-hidden rounded-full bg-green-500 hover:bg-green-600 px-6 py-2.5 transition-all duration-300 hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:scale-105 cursor-pointer border-0">
+                    <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                    <span class="relative flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.126.549 4.204 1.594 6.035L.12 24l6.095-1.464A11.97 11.97 0 0012.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm.012 21.996c-1.802 0-3.568-.485-5.118-1.403l-.367-.217-3.8.913.929-3.705-.239-.379a9.982 9.982 0 01-1.528-5.322c0-5.541 4.509-10.05 10.05-10.05 2.686 0 5.209 1.047 7.107 2.946 1.898 1.899 2.943 4.422 2.943 7.108 0 5.54-4.509 10.049-10.048 10.049zm5.508-7.53c-.302-.151-1.787-.882-2.064-.984-.277-.101-.479-.151-.68.151-.202.302-.78 1.008-.956 1.209-.176.202-.352.227-.655.076-1.512-.756-2.518-1.511-3.475-3.023-.277-.428.176-.403.755-1.561.101-.202.05-.378-.025-.529-.076-.151-.68-1.638-.932-2.242-.244-.588-.493-.508-.68-.517-.176-.009-.378-.009-.58-.009-.202 0-.529.076-.806.378-.277.302-1.058 1.033-1.058 2.519 0 1.486 1.083 2.923 1.234 3.124.151.202 2.14 3.275 5.186 4.585.73.302 1.309.479 1.763.605.73.202 1.385.176 1.913.101.579-.076 1.787-.73 2.039-1.436.252-.705.252-1.31.176-1.436-.076-.126-.277-.202-.58-.353z"></path></svg>
+                        WhatsApp
+                    </span>
+                </a>
 
-            <a href="#" class="hidden md:inline-flex px-5 py-2.5 rounded-full text-sm font-semibold text-white border border-white/10 bg-white/5 hover:bg-white/10 transition-colors">Central do Aluno</a>
-            <button class="md:hidden text-white p-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
+                <button id="btn-mobile-open" class="md:hidden text-white p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobile-overlay" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[60] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="mobile-sidebar" class="fixed top-0 right-0 h-full w-[280px] bg-slate-900 border-l border-white/10 z-[70] translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+        <div class="p-5 flex justify-between items-center border-b border-white/5">
+            <img src="img/logoPta.svg" alt="PTA" class="h-8 w-auto">
+            <button id="btn-mobile-close" class="text-slate-400 hover:text-white p-2 bg-white/5 rounded-full">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
-    </header>
+        <div class="p-6 flex flex-col gap-6 text-sm font-semibold tracking-wider uppercase text-slate-300">
+            <a href="#sobre" class="mobile-link hover:text-brand transition-colors">Sobre</a>
+            <a href="#cursos" class="mobile-link hover:text-brand transition-colors">Pós-Graduações</a>
+            <a href="#imersoes" class="mobile-link hover:text-brand transition-colors">Imersões</a>
+            <a href="#depoimentos" class="mobile-link hover:text-brand transition-colors">Alunos</a>
+        </div>
+        <div class="mt-auto p-6 border-t border-white/5">
+            <a href="https://wa.me/5511999999999" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 rounded-full bg-green-500 text-white font-bold text-xs uppercase tracking-widest">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.126.549 4.204 1.594 6.035L.12 24l6.095-1.464A11.97 11.97 0 0012.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm.012 21.996c-1.802 0-3.568-.485-5.118-1.403l-.367-.217-3.8.913.929-3.705-.239-.379a9.982 9.982 0 01-1.528-5.322c0-5.541 4.509-10.05 10.05-10.05 2.686 0 5.209 1.047 7.107 2.946 1.898 1.899 2.943 4.422 2.943 7.108 0 5.54-4.509 10.049-10.048 10.049z"></path></svg>
+                WhatsApp
+            </a>
+        </div>
+    </div>
 
-    <main class="relative z-10 w-full pt-16 pb-12 px-5 md:pt-28 md:pb-20 overflow-hidden">
-        <div class="max-w-7xl mx-auto text-center flex flex-col items-center">
-            
+    <main id="hero-section" class="relative z-10 w-full pt-32 pb-12 px-5 md:pt-48 md:pb-20 overflow-hidden">
+        <canvas id="hero-particles" class="absolute inset-0 z-0 pointer-events-none"></canvas>
+
+        <div class="max-w-7xl mx-auto text-center flex flex-col items-center relative z-10" data-aos="zoom-in" data-aos-duration="1000">
+
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 text-brand-light text-xs md:text-sm font-semibold tracking-wide mb-6">
                 <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span> Bem-vindo à PTA.
             </div>
-            
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight leading-[1.1] mb-6">
-                Personal Trainer <br/>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight leading-[1.1] mb-6 drop-shadow-lg">
+                Personal Trainer <br />
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-light to-brand">Academy</span>
             </h1>
-            <p class="text-base md:text-xl text-slate-400 mb-8 max-w-2xl leading-relaxed">
-                A formação top 1 em aulas práticas. <strong class="text-slate-200 font-semibold">100% completa</strong> para quem quer dominar o mercado fitness com reconhecimento oficial e prática real.
+            <p class="text-base md:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed drop-shadow-md">
+                A formação top 1 em aulas práticas. <strong class="text-white font-semibold">100% completa</strong>
+                para quem quer dominar o mercado fitness com reconhecimento oficial e prática real.
             </p>
-            
-            <a href="#" class="px-8 py-4 md:px-10 md:py-5 rounded-full bg-gradient-to-r from-brand to-brand-dark text-white font-bold text-lg text-center shadow-[0_0_20px_rgba(3,123,255,0.4)] hover:shadow-[0_0_30px_rgba(3,123,255,0.6)] hover:scale-[1.02] transition-all duration-300 w-full sm:w-auto">
+
+            <a href="#cursos" class="px-8 py-4 md:px-10 md:py-5 rounded-full bg-gradient-to-r from-brand to-brand-dark text-white font-bold text-lg text-center shadow-[0_0_20px_rgba(3,123,255,0.4)] hover:shadow-[0_0_30px_rgba(3,123,255,0.6)] hover:scale-[1.02] transition-all duration-300 w-full sm:w-auto">
                 Quero me tornar especialista
             </a>
-            
-            <div class="mt-8 flex items-center justify-center gap-2 text-sm text-slate-400">
+
+            <div class="mt-8 flex items-center justify-center gap-2 text-sm text-slate-300">
                 <span class="text-yellow-400 text-lg">★★★★★</span>
                 <span class="text-white font-bold">4.8</span>
                 <span>| +22.820 avaliações</span>
@@ -130,11 +199,43 @@
         </div>
     </main>
 
-    <section class="relative z-10 w-full px-5 py-16 md:py-24 border-y border-white/5 overflow-hidden">
+    <section class="relative z-10 w-full py-12 md:py-16 bg-slate-950 border-y border-white/5 overflow-hidden" data-aos="fade-up">
+        <div class="max-w-4xl mx-auto px-5 text-center mb-10">
+            <h3 class="text-white font-bold text-xl md:text-2xl mb-3">Mais de 20 parceiros confiáveis</h3>
+            <p class="text-slate-400 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
+                A educação é a base do crescimento pessoal e social, capacitando indivíduos com conhecimento, habilidades e pensamento crítico.
+            </p>
+        </div>
+
+        <div class="w-full overflow-hidden">
+            <div class="parceiros-track flex flex-nowrap w-max">
+                <!-- Primeira cópia das logos -->
+                <div class="flex items-center justify-center gap-12 md:gap-20 px-8 shrink-0">
+                    <img src="img/parceiros/parceiro1.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro2.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro3.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro4.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro5.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro6.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                </div>
+                <!-- Duplicata para loop infinito -->
+                <div class="flex items-center justify-center gap-12 md:gap-20 px-8 shrink-0">
+                    <img src="img/parceiros/parceiro1.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro2.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro3.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro4.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro5.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                    <img src="img/parceiros/parceiro6.svg" alt="Parceiro" class="h-8 md:h-10 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative z-10 w-full px-5 py-16 md:py-24 border-b border-white/5 overflow-hidden">
         <div class="absolute top-1/4 right-0 w-[400px] h-[400px] bg-brand/5 blur-[100px] rounded-full pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto relative z-10">
+        <div class="max-w-7xl mx-auto relative z-10" data-aos="fade-up" data-aos-delay="200">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 p-6 md:p-8 rounded-3xl glass-card relative overflow-hidden group/card">
-                
+
                 <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[2px] bg-gradient-to-r from-transparent via-brand to-transparent opacity-40 group-hover/card:opacity-100 transition-opacity duration-500"></div>
 
                 <div class="flex flex-col items-center text-center group">
@@ -180,10 +281,10 @@
         </div>
     </section>
 
-    <section id="sobre" class="relative z-10 w-full px-5 py-16 md:py-24 bg-slate-950 border-y border-white/5 overflow-hidden">
+    <section id="sobre" class="relative z-10 w-full px-5 py-16 md:py-24 bg-slate-950 border-b border-white/5 overflow-hidden">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 md:gap-24 items-center relative z-10">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 md:gap-24 items-center relative z-10" data-aos="fade-right">
             <div class="max-w-2xl">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="h-[2px] w-8 bg-brand"></div>
@@ -211,10 +312,10 @@
                 </ul>
             </div>
 
-            <div class="relative flex justify-center lg:justify-end items-center mt-10 lg:mt-0">
+            <div class="relative flex justify-center lg:justify-end items-center mt-10 lg:mt-0" data-aos="fade-left" data-aos-delay="200">
                 <div class="absolute w-[300px] h-[300px] md:w-[400px] md:h-[400px] border border-brand/20 rounded-full animate-[spin_60s_linear_infinite]"></div>
                 <div class="absolute w-[250px] h-[250px] md:w-[350px] md:h-[350px] border border-white/5 rounded-full animate-[spin_40s_linear_infinite_reverse]"></div>
-                
+
                 <div class="relative z-10 glass-card p-10 md:p-14 rounded-3xl text-center shadow-[0_20px_50px_-10px_rgba(3,123,255,0.2)] border border-brand/30 hover:border-brand transition-all duration-500 bg-slate-900/80 backdrop-blur-xl group hover:-translate-y-2">
                     <div class="absolute inset-0 rounded-3xl bg-gradient-to-b from-brand/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <span class="relative block text-7xl md:text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-brand-light to-brand mb-4 filter drop-shadow-[0_0_15px_rgba(3,123,255,0.4)] z-10">23+</span>
@@ -235,140 +336,26 @@
         </div>
     </section>
 
-    <section class="relative z-10 w-full px-5 py-16 md:py-24 bg-slate-950/80 border-y border-white/5 overflow-hidden">
-        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-b from-brand/5 via-transparent to-transparent pointer-events-none"></div>
-        <div class="absolute bottom-0 left-1/4 w-[350px] h-[350px] bg-brand-light/5 blur-[100px] rounded-full pointer-events-none"></div>
-        
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
-                <div class="max-w-2xl">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="w-2 h-2 rounded-full bg-brand"></span>
-                        <span class="text-brand-light text-sm font-bold tracking-widest uppercase">Categoria Superior</span>
-                    </div>
-                    <h2 class="text-3xl md:text-5xl font-extrabold text-white leading-tight">
-                        Especializações práticas <br class="hidden md:block"/>
-                        e com foco em resultado
-                    </h2>
-                </div>
-                <a href="#cursos" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/10 text-white text-sm font-medium hover:bg-brand hover:border-brand hover:text-white transition-all duration-300 group">
-                    Ver todos os cursos
-                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <div class="group relative p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm overflow-hidden cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)]">
-                    <div class="absolute inset-0 bg-gradient-to-br from-brand/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-brand mb-6 group-hover:bg-brand group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-light transition-colors">Musculação e Estética (Bodybuilding)</h3>
-                        <p class="text-sm text-slate-400 mb-6 line-clamp-2">Hipertrofia e definição levadas ao limite com embasamento científico.</p>
-                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-500 group-hover:text-white transition-colors">
-                            Saber mais <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group relative p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm overflow-hidden cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)]">
-                    <div class="absolute inset-0 bg-gradient-to-br from-brand/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-brand mb-6 group-hover:bg-brand group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-light transition-colors">Biomecânica Aplicada ao Movimento</h3>
-                        <p class="text-sm text-slate-400 mb-6 line-clamp-2">Análise avançada do movimento para maximizar resultados e prevenir lesões.</p>
-                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-500 group-hover:text-white transition-colors">
-                            Saber mais <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group relative p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm overflow-hidden cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)]">
-                    <div class="absolute inset-0 bg-gradient-to-br from-brand/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-brand mb-6 group-hover:bg-brand group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-light transition-colors">Saúde Feminina Integrada</h3>
-                        <p class="text-sm text-slate-400 mb-6 line-clamp-2">Treinamento otimizado para a fisiologia da mulher, do pós-parto à menopausa.</p>
-                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-500 group-hover:text-white transition-colors">
-                            Saber mais <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group relative p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm overflow-hidden cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)]">
-                    <div class="absolute inset-0 bg-gradient-to-br from-brand/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-brand mb-6 group-hover:bg-brand group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-light transition-colors">Treinamento Funcional e Performance</h3>
-                        <p class="text-sm text-slate-400 mb-6 line-clamp-2">Condicionamento integral, ganho de performance e mobilidade avançada.</p>
-                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-500 group-hover:text-white transition-colors">
-                            Saber mais <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group relative p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm overflow-hidden cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)]">
-                    <div class="absolute inset-0 bg-gradient-to-br from-brand/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-brand mb-6 group-hover:bg-brand group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-light transition-colors">Musculação e Periodização Avançada</h3>
-                        <p class="text-sm text-slate-400 mb-6 line-clamp-2">Planejamento estratégico de treinos para evolução contínua sem platôs.</p>
-                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-500 group-hover:text-white transition-colors">
-                            Saber mais <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group relative p-8 rounded-3xl bg-slate-900/40 border border-white/5 backdrop-blur-sm overflow-hidden cursor-pointer hover:-translate-y-1 transition-all duration-300 hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)]">
-                    <div class="absolute inset-0 bg-gradient-to-br from-brand/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="relative z-10">
-                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-brand mb-6 group-hover:bg-brand group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-brand-light transition-colors">Fisiologia do Exercício</h3>
-                        <p class="text-sm text-slate-400 mb-6 line-clamp-2">Compreensão profunda das respostas do metabolismo humano ao treinamento.</p>
-                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-500 group-hover:text-white transition-colors">
-                            Saber mais <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="cursos" class="relative z-10 w-full py-16 md:py-24 bg-slate-900/30 border-y border-white/5 overflow-hidden">
-        
+    <section id="cursos" class="relative z-10 w-full py-16 md:py-24 bg-slate-900/30 border-b border-white/5 overflow-hidden">
         <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand/5 blur-[100px] rounded-full pointer-events-none"></div>
         <div class="absolute bottom-1/4 left-0 w-[300px] h-[300px] bg-brand/5 blur-[80px] rounded-full pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto px-5 mb-12 flex flex-col md:flex-row justify-between items-end gap-6 relative z-10">
+        <div class="max-w-7xl mx-auto px-5 mb-12 flex flex-col md:flex-row justify-between items-end gap-6 relative z-10" data-aos="fade-up">
             <div>
                 <div class="flex items-center gap-2 mb-3">
                     <span class="w-2 h-2 rounded-full bg-brand"></span>
                     <span class="text-brand-light text-sm font-bold tracking-widest uppercase">Cursos populares</span>
                 </div>
-                <h2 class="text-3xl md:text-5xl font-extrabold text-white">Conheça nossas <br class="hidden md:block"/>Pós-Graduações</h2>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white">Conheça nossas <br class="hidden md:block" />Pós-Graduações</h2>
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-5 relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="max-w-7xl mx-auto px-5 relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="200">
             
             <a href="https://pos.personaltraineracademy.com.br/biomecanica-2026/" target="_blank" class="group relative bg-slate-950/50 border border-white/5 rounded-[2rem] overflow-hidden hover:border-brand/50 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)] transition-all duration-300 flex flex-col">
                 <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden">
                     <img src="img/pos-graduacao/Bio-1-1.png.webp" alt="Biomecânica" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
                 </div>
                 <div class="p-6 relative z-20 flex flex-col flex-1">
                     <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-brand-light transition-colors">Biomecânica</h3>
@@ -376,31 +363,20 @@
                         <svg class="w-5 h-5 text-brand-light shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         <span>André Albuquerque</span>
                     </div>
-                    
                     <div class="mt-auto flex flex-col">
                         <div class="flex items-center justify-between mb-5">
-                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Aulas
-                            </div>
-                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                2.933 Alunos
-                            </div>
+                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">Aulas</div>
+                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">2.933 Alunos</div>
                         </div>
-                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">
-                            Saiba mais
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </div>
+                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">Saiba mais</div>
                     </div>
                 </div>
             </a>
-
+            
             <a href="https://pos.personaltraineracademy.com.br/treinamento-feminino-2026/" target="_blank" class="group relative bg-slate-950/50 border border-white/5 rounded-[2rem] overflow-hidden hover:border-brand/50 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)] transition-all duration-300 flex flex-col">
                 <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden">
                     <img src="img/pos-graduacao/treinamentoFeminino.webp" alt="Treinamento feminino" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
                 </div>
                 <div class="p-6 relative z-20 flex flex-col flex-1">
                     <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-brand-light transition-colors">Treinamento feminino</h3>
@@ -408,22 +384,12 @@
                         <svg class="w-5 h-5 text-brand-light shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         <span>Rafa Lund</span>
                     </div>
-                    
                     <div class="mt-auto flex flex-col">
                         <div class="flex items-center justify-between mb-5">
-                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Aulas
-                            </div>
-                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                2.401 Alunos
-                            </div>
+                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">Aulas</div>
+                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">2.401 Alunos</div>
                         </div>
-                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">
-                            Saiba mais
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </div>
+                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">Saiba mais</div>
                     </div>
                 </div>
             </a>
@@ -432,30 +398,19 @@
                 <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden">
                     <img src="img/pos-graduacao/mpa.webp" alt="Musculação e Periodização Avançada" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
                 </div>
                 <div class="p-6 relative z-20 flex flex-col flex-1">
-                    <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-brand-light transition-colors">Musculação e Periodização Avançada</h3>
+                    <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-brand-light transition-colors">Musculação Avançada</h3>
                     <div class="flex items-center gap-2 mb-6 text-slate-300 font-medium text-lg">
                         <svg class="w-5 h-5 text-brand-light shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         <span>Belmiro Salles</span>
                     </div>
-                    
                     <div class="mt-auto flex flex-col">
                         <div class="flex items-center justify-between mb-5">
-                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Aulas
-                            </div>
-                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                232 Alunos
-                            </div>
+                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">Aulas</div>
+                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">232 Alunos</div>
                         </div>
-                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">
-                            Saiba mais
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </div>
+                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">Saiba mais</div>
                     </div>
                 </div>
             </a>
@@ -464,7 +419,6 @@
                 <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden">
                     <img src="img/pos-graduacao/fisiologia.webp" alt="Fisiologia do exercício" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
                 </div>
                 <div class="p-6 relative z-20 flex flex-col flex-1">
                     <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-brand-light transition-colors">Fisiologia do exercício</h3>
@@ -472,22 +426,12 @@
                         <svg class="w-5 h-5 text-brand-light shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         <span>Igor Conterato</span>
                     </div>
-                    
                     <div class="mt-auto flex flex-col">
                         <div class="flex items-center justify-between mb-5">
-                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Aulas
-                            </div>
-                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                589 Alunos
-                            </div>
+                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">Aulas</div>
+                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">589 Alunos</div>
                         </div>
-                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">
-                            Saiba mais
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </div>
+                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">Saiba mais</div>
                     </div>
                 </div>
             </a>
@@ -496,7 +440,6 @@
                 <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden">
                     <img src="img/pos-graduacao/bodybuilding.webp" alt="Bodybuilding" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
                 </div>
                 <div class="p-6 relative z-20 flex flex-col flex-1">
                     <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-brand-light transition-colors">Bodybuilding</h3>
@@ -504,22 +447,12 @@
                         <svg class="w-5 h-5 text-brand-light shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         <span>Walter Krause</span>
                     </div>
-                    
                     <div class="mt-auto flex flex-col">
                         <div class="flex items-center justify-between mb-5">
-                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Aulas
-                            </div>
-                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                1.982 Alunos
-                            </div>
+                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">Aulas</div>
+                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">1.982 Alunos</div>
                         </div>
-                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">
-                            Saiba mais
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </div>
+                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">Saiba mais</div>
                     </div>
                 </div>
             </a>
@@ -528,7 +461,6 @@
                 <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden">
                     <img src="img/pos-graduacao/treinamentoFuncional.webp" alt="Treinamento funcional" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
-                    <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
                 </div>
                 <div class="p-6 relative z-20 flex flex-col flex-1">
                     <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-brand-light transition-colors">Treinamento funcional</h3>
@@ -536,157 +468,171 @@
                         <svg class="w-5 h-5 text-brand-light shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                         <span>Leandro Ono</span>
                     </div>
-                    
                     <div class="mt-auto flex flex-col">
                         <div class="flex items-center justify-between mb-5">
-                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Aulas
-                            </div>
-                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                1.329 Alunos
-                            </div>
+                            <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">Aulas</div>
+                            <div class="flex items-center gap-1.5 text-brand-light font-bold text-xs bg-brand/10 px-3 py-1.5 rounded-full border border-brand/20">1.329 Alunos</div>
                         </div>
-                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">
-                            Saiba mais
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </div>
+                        <div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-bold text-sm group-hover:bg-brand group-hover:border-brand group-hover:shadow-[0_0_20px_rgba(3,123,255,0.4)] transition-all duration-300">Saiba mais</div>
                     </div>
                 </div>
             </a>
-
+            
         </div>
     </section>
 
-    <section id="imersoes" class="relative z-10 w-full py-16 md:py-24 bg-slate-950 border-y border-white/5 overflow-hidden">
+    <section id="imersoes" class="relative z-10 w-full py-16 md:py-24 bg-slate-950 border-b border-white/5 overflow-hidden">
         <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand/5 blur-[120px] rounded-full pointer-events-none"></div>
         <div class="absolute top-1/3 right-1/4 w-[280px] h-[280px] bg-brand-light/5 blur-[90px] rounded-full pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto px-5 relative z-10">
+        <div class="max-w-7xl mx-auto px-5 relative z-10" data-aos="fade-up">
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div>
                     <div class="flex items-center gap-2 mb-3">
                         <span class="w-2 h-2 rounded-full bg-brand"></span>
                         <span class="text-brand-light text-sm font-bold tracking-widest uppercase">Eventos Exclusivos</span>
                     </div>
-                    <h2 class="text-3xl md:text-5xl font-extrabold text-white">Um pouco das nossas <br class="hidden md:block"/>Imersões</h2>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-white">Um pouco das nossas <br class="hidden md:block" />Imersões</h2>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <div class="group relative bg-slate-900/40 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between h-full">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-white/10 text-xs font-semibold text-slate-300 mb-6 group-hover:border-brand/30 transition-colors">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="200">
+
+                <div class="group relative bg-slate-950/50 border border-white/5 rounded-[2rem] overflow-hidden hover:border-brand/50 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)] transition-all duration-300 flex flex-col h-full cursor-pointer">
+                    <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden shrink-0">
+                        <img src="img/imersao/BB3.jpg.webp" alt="Treinador Pro" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
+                        <div class="absolute top-4 left-4 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/10 text-[10px] font-bold text-slate-300 uppercase tracking-wider">
                             <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Ao vivo / Online
                         </div>
+                    </div>
+                    <div class="p-6 relative z-20 flex flex-col flex-1 justify-between bg-slate-900/40 backdrop-blur-md">
                         <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">Treinador Pro</h3>
-                    </div>
-                    <div class="mt-10 pt-6 border-t border-white/5 flex items-end justify-between">
-                        <div>
-                            <span class="block text-3xl font-extrabold text-white">3.300</span>
-                            <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
-                            <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        <div class="mt-8 pt-6 border-t border-white/5 flex items-end justify-between">
+                            <div>
+                                <span class="block text-3xl font-extrabold text-white">3.300</span>
+                                <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
+                                <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="group relative bg-slate-900/40 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between h-full">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-white/10 text-xs font-semibold text-slate-300 mb-6 group-hover:border-brand/30 transition-colors">
+                <div class="group relative bg-slate-950/50 border border-white/5 rounded-[2rem] overflow-hidden hover:border-brand/50 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)] transition-all duration-300 flex flex-col h-full cursor-pointer">
+                    <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden shrink-0">
+                        <img src="img/imersao/Bio-ex1.jpg.webp" alt="Biomecânica Exp. 1" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
+                        <div class="absolute top-4 left-4 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/10 text-[10px] font-bold text-slate-300 uppercase tracking-wider">
                             <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Ao vivo / Online
                         </div>
+                    </div>
+                    <div class="p-6 relative z-20 flex flex-col flex-1 justify-between bg-slate-900/40 backdrop-blur-md">
                         <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">Biomecânica Exp. 1</h3>
-                    </div>
-                    <div class="mt-10 pt-6 border-t border-white/5 flex items-end justify-between">
-                        <div>
-                            <span class="block text-3xl font-extrabold text-white">3.000</span>
-                            <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
-                            <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        <div class="mt-8 pt-6 border-t border-white/5 flex items-end justify-between">
+                            <div>
+                                <span class="block text-3xl font-extrabold text-white">3.000</span>
+                                <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
+                                <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="group relative bg-slate-900/40 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between h-full">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-white/10 text-xs font-semibold text-slate-300 mb-6 group-hover:border-brand/30 transition-colors">
+                <div class="group relative bg-slate-950/50 border border-white/5 rounded-[2rem] overflow-hidden hover:border-brand/50 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)] transition-all duration-300 flex flex-col h-full cursor-pointer">
+                    <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden shrink-0">
+                        <img src="img/imersao/Bio-ex2.jpg.webp" alt="Biomecânica Exp. 2" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
+                        <div class="absolute top-4 left-4 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/10 text-[10px] font-bold text-slate-300 uppercase tracking-wider">
                             <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Ao vivo / Online
                         </div>
+                    </div>
+                    <div class="p-6 relative z-20 flex flex-col flex-1 justify-between bg-slate-900/40 backdrop-blur-md">
                         <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">Biomecânica Exp. 2</h3>
-                    </div>
-                    <div class="mt-10 pt-6 border-t border-white/5 flex items-end justify-between">
-                        <div>
-                            <span class="block text-3xl font-extrabold text-white">2.900</span>
-                            <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
-                            <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        <div class="mt-8 pt-6 border-t border-white/5 flex items-end justify-between">
+                            <div>
+                                <span class="block text-3xl font-extrabold text-white">2.900</span>
+                                <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
+                                <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="group relative bg-slate-900/40 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between h-full">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-white/10 text-xs font-semibold text-slate-300 mb-6 group-hover:border-brand/30 transition-colors">
+                <div class="group relative bg-slate-950/50 border border-white/5 rounded-[2rem] overflow-hidden hover:border-brand/50 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)] transition-all duration-300 flex flex-col h-full cursor-pointer">
+                    <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden shrink-0">
+                        <img src="img/imersao/SM_.jpg.webp" alt="Treinamento & Estética" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
+                        <div class="absolute top-4 left-4 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/10 text-[10px] font-bold text-slate-300 uppercase tracking-wider">
                             <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Ao vivo / Online
                         </div>
+                    </div>
+                    <div class="p-6 relative z-20 flex flex-col flex-1 justify-between bg-slate-900/40 backdrop-blur-md">
                         <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">Treinamento & Estética</h3>
-                    </div>
-                    <div class="mt-10 pt-6 border-t border-white/5 flex items-end justify-between">
-                        <div>
-                            <span class="block text-3xl font-extrabold text-white">2.700</span>
-                            <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
-                            <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        <div class="mt-8 pt-6 border-t border-white/5 flex items-end justify-between">
+                            <div>
+                                <span class="block text-3xl font-extrabold text-white">2.700</span>
+                                <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
+                                <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="group relative bg-slate-900/40 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between h-full">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-white/10 text-xs font-semibold text-slate-300 mb-6 group-hover:border-brand/30 transition-colors">
+                <div class="group relative bg-slate-950/50 border border-white/5 rounded-[2rem] overflow-hidden hover:border-brand/50 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)] transition-all duration-300 flex flex-col h-full cursor-pointer">
+                    <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden shrink-0">
+                        <img src="img/imersao/BB2.jpg.webp" alt="Bodybuilding Pro" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
+                        <div class="absolute top-4 left-4 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/10 text-[10px] font-bold text-slate-300 uppercase tracking-wider">
                             <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Ao vivo / Online
                         </div>
+                    </div>
+                    <div class="p-6 relative z-20 flex flex-col flex-1 justify-between bg-slate-900/40 backdrop-blur-md">
                         <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">Bodybuilding Pro</h3>
-                    </div>
-                    <div class="mt-10 pt-6 border-t border-white/5 flex items-end justify-between">
-                        <div>
-                            <span class="block text-3xl font-extrabold text-white">2.500</span>
-                            <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
-                            <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        <div class="mt-8 pt-6 border-t border-white/5 flex items-end justify-between">
+                            <div>
+                                <span class="block text-3xl font-extrabold text-white">2.500</span>
+                                <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
+                                <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="group relative bg-slate-900/40 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between h-full">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-white/10 text-xs font-semibold text-slate-300 mb-6 group-hover:border-brand/30 transition-colors">
+                <div class="group relative bg-slate-950/50 border border-white/5 rounded-[2rem] overflow-hidden hover:border-brand/50 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.2)] transition-all duration-300 flex flex-col h-full cursor-pointer">
+                    <div class="relative h-56 bg-slate-800 flex items-center justify-center overflow-hidden shrink-0">
+                        <img src="img/imersao/Fisio.jpg.webp" alt="Fisiologia Virtual" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent z-10 pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
+                        <div class="absolute top-4 left-4 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-white/10 text-[10px] font-bold text-slate-300 uppercase tracking-wider">
                             <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Ao vivo / Online
                         </div>
+                    </div>
+                    <div class="p-6 relative z-20 flex flex-col flex-1 justify-between bg-slate-900/40 backdrop-blur-md">
                         <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors">Fisiologia Virtual</h3>
-                    </div>
-                    <div class="mt-10 pt-6 border-t border-white/5 flex items-end justify-between">
-                        <div>
-                            <span class="block text-3xl font-extrabold text-white">2.000</span>
-                            <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
+                        <div class="mt-8 pt-6 border-t border-white/5 flex items-end justify-between">
+                            <div>
+                                <span class="block text-3xl font-extrabold text-white">2.000</span>
+                                <span class="text-sm font-medium text-slate-500">Alunos participantes</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
+                                <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </div>
                         </div>
-                        <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors text-slate-400">
-                            <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </div>
                     </div>
                 </div>
 
@@ -694,261 +640,250 @@
         </div>
     </section>
 
-    <section class="relative z-10 w-full py-16 md:py-24 bg-slate-950 border-y border-white/5 overflow-hidden">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-brand/10 blur-[150px] rounded-full pointer-events-none"></div>
-        <div class="absolute top-0 right-1/4 w-[250px] h-[250px] bg-brand-light/5 blur-[80px] rounded-full pointer-events-none"></div>
-        
-        <div class="max-w-7xl mx-auto px-5 text-center mb-16 relative z-10">
-            <div class="flex items-center justify-center gap-2 mb-4">
+    <section id="depoimentos" class="relative z-10 w-full py-16 md:py-24 bg-slate-900/30 border-b border-white/5 overflow-hidden">
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand/5 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-5 relative z-10 text-center mb-12" data-aos="fade-up">
+            <div class="inline-flex items-center justify-center gap-2 mb-3">
                 <span class="w-2 h-2 rounded-full bg-brand"></span>
-                <span class="text-brand-light text-sm font-bold tracking-widest uppercase">Autoridade em Números</span>
-            </div>
-            <h2 class="text-3xl md:text-5xl font-extrabold text-white">O caminho do conhecimento <br class="hidden md:block"/>até o resultado</h2>
-        </div>
-
-        <div class="max-w-6xl mx-auto px-5 grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-            
-            <div class="relative group bg-slate-900/40 backdrop-blur-md border border-white/5 p-10 rounded-[2rem] hover:border-brand/40 hover:bg-slate-800/50 hover:shadow-[0_0_40px_-15px_rgba(3,123,255,0.3)] transition-all duration-500 text-center hover:-translate-y-1">
-                <div class="absolute inset-0 bg-gradient-to-b from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem]"></div>
-                <div class="relative z-10">
-                    <span class="block text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-3 filter drop-shadow-md">+20.000</span>
-                    <span class="text-lg font-bold text-brand block mb-2 uppercase tracking-wide">Alunos</span>
-                    <p class="text-sm text-slate-400">Já passaram pelas pós da PTA.</p>
-                </div>
-            </div>
-
-            <div class="relative group bg-slate-900/40 backdrop-blur-md border border-white/5 p-10 rounded-[2rem] hover:border-brand/40 hover:bg-slate-800/50 hover:shadow-[0_0_40px_-15px_rgba(3,123,255,0.3)] transition-all duration-500 text-center hover:-translate-y-1">
-                <div class="absolute inset-0 bg-gradient-to-b from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem]"></div>
-                <div class="relative z-10">
-                    <span class="block text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-3 filter drop-shadow-md">+100</span>
-                    <span class="text-lg font-bold text-brand block mb-2 uppercase tracking-wide">Professores Especialistas</span>
-                    <p class="text-sm text-slate-400">Todos atuantes no mercado.</p>
-                </div>
-            </div>
-
-            <div class="relative group bg-slate-900/40 backdrop-blur-md border border-white/5 p-10 rounded-[2rem] hover:border-brand/40 hover:bg-slate-800/50 hover:shadow-[0_0_40px_-15px_rgba(3,123,255,0.3)] transition-all duration-500 text-center hover:-translate-y-1">
-                <div class="absolute inset-0 bg-gradient-to-b from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem]"></div>
-                <div class="relative z-10">
-                    <span class="block text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-3 filter drop-shadow-md">99%</span>
-                    <span class="text-lg font-bold text-brand block mb-2 uppercase tracking-wide">De Aprovação</span>
-                    <p class="text-sm text-slate-400">Alunos satisfeitos com a transformação.</p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="professores" class="relative z-10 w-full py-16 md:py-24 bg-slate-900/30 border-y border-white/5 overflow-hidden">
-        <div class="absolute top-0 left-0 w-[600px] h-[600px] bg-brand/5 blur-[120px] rounded-full pointer-events-none"></div>
-        <div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-brand/5 blur-[100px] rounded-full pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-5 mb-16 relative z-10 text-center flex flex-col items-center">
-            <div class="flex items-center gap-2 mb-3">
+                <span class="text-brand-light text-sm font-bold tracking-widest uppercase">Por que nos escolher</span>
                 <span class="w-2 h-2 rounded-full bg-brand"></span>
-                <span class="text-brand-light text-sm font-bold tracking-widest uppercase">Nossos Mestres</span>
             </div>
-            <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Corpo Docente</h2>
-            <p class="text-slate-400 max-w-2xl text-lg">
-                Aprenda com quem vive o mercado na prática e é referência nacional em ciência e resultados.
-            </p>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Mais de 15.000 alunos falam sobre<br class="hidden md:block" /> nossos cursos e instrutores</h2>
         </div>
 
-        <div class="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
-            
-            <div class="group relative bg-slate-900/50 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-2 transition-all duration-300 flex flex-col">
-                <div class="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem]"></div>
-                <div class="relative z-10 flex flex-col items-center mb-6">
-                    <div class="w-24 h-24 rounded-full bg-slate-800 border-2 border-white/10 group-hover:border-brand p-1 transition-colors duration-300 mb-4">
-                        <div class="w-full h-full rounded-full bg-slate-700"></div> </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors text-center">André Albuquerque</h3>
-                    <span class="inline-block px-3 py-1 bg-brand/10 border border-brand/20 text-brand-light text-xs font-bold rounded-full text-center">O "Pai da Biomecânica"</span>
-                </div>
-                <p class="text-sm text-slate-400 leading-relaxed relative z-10">
-                    Mestre em Educação Física pela Universidade Federal do Paraná (UFPR). Com especialização em Biomecânica. Reconhecido como o “Pai da Biomecânica” no Brasil, ele é uma das maiores referências na área.
-                </p>
-            </div>
-
-            <div class="group relative bg-slate-900/50 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-2 transition-all duration-300 flex flex-col">
-                <div class="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem]"></div>
-                <div class="relative z-10 flex flex-col items-center mb-6">
-                    <div class="w-24 h-24 rounded-full bg-slate-800 border-2 border-white/10 group-hover:border-brand p-1 transition-colors duration-300 mb-4">
-                        <div class="w-full h-full rounded-full bg-slate-700"></div>
+        <div class="max-w-7xl mx-auto px-5 relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="200">
+            <div class="glass-card p-8 rounded-3xl relative hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-yellow-400 mb-4 text-lg">★★★★★</div>
+                <p class="text-slate-300 mb-8 italic">"A didática é incrível. Antes eu tinha muita dificuldade em aplicar a biomecânica na prática com meus alunos, mas depois da pós-graduação, meus resultados dobraram. Super recomendo!"</p>
+                <div class="flex items-center gap-4 border-t border-white/10 pt-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center text-white font-bold text-lg">M</div>
+                    <div>
+                        <p class="text-white font-bold">Marcos Silva</p>
+                        <p class="text-xs text-slate-500 uppercase tracking-widest">Personal Trainer</p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors text-center">Rafa Lund</h3>
-                    <span class="inline-block px-3 py-1 bg-brand/10 border border-brand/20 text-brand-light text-xs font-bold rounded-full text-center">Criador do Método Lund</span>
                 </div>
-                <p class="text-sm text-slate-400 leading-relaxed relative z-10">
-                    O Rafa Lund é um profissional de Educação Física com Mestrado em Ciências do Desporto, notável por seu foco na saúde e treinamento feminino. Ele é o criador do Método Lund, no qual aplica rigor científico e evidências para otimizar o treino de mulheres, abordando especialmente temas complexos como gestação, pós-parto, diástase e a influência dos ciclos hormonais.
-                </p>
             </div>
 
-            <div class="group relative bg-slate-900/50 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-2 transition-all duration-300 flex flex-col">
-                <div class="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem]"></div>
-                <div class="relative z-10 flex flex-col items-center mb-6">
-                    <div class="w-24 h-24 rounded-full bg-slate-800 border-2 border-white/10 group-hover:border-brand p-1 transition-colors duration-300 mb-4">
-                        <div class="w-full h-full rounded-full bg-slate-700"></div>
+            <div class="glass-card p-8 rounded-3xl relative hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-yellow-400 mb-4 text-lg">★★★★★</div>
+                <p class="text-slate-300 mb-8 italic">"Os professores são de fato atuantes no mercado. Não é aquela teoria chata que não se aplica em lugar nenhum. Tudo o que aprendo na segunda, eu já aplico na terça na academia."</p>
+                <div class="flex items-center gap-4 border-t border-white/10 pt-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-brand-light to-brand flex items-center justify-center text-white font-bold text-lg">A</div>
+                    <div>
+                        <p class="text-white font-bold">Aline Freitas</p>
+                        <p class="text-xs text-slate-500 uppercase tracking-widest">Educadora Física</p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors text-center">Belmiro Salles</h3>
-                    <span class="inline-block px-3 py-1 bg-brand/10 border border-brand/20 text-brand-light text-xs font-bold rounded-full text-center">Ciência do Treinamento</span>
                 </div>
-                <p class="text-sm text-slate-400 leading-relaxed relative z-10">
-                    Belmiro Freitas de Salles é professor e pesquisador em treinamento de força, formado pela UFRJ, doutor pela UERJ e coordenador do STLab, sendo referência no Brasil em musculação baseada em ciência.
-                </p>
             </div>
 
-            <div class="group relative bg-slate-900/50 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-2 transition-all duration-300 flex flex-col">
-                <div class="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem]"></div>
-                <div class="relative z-10 flex flex-col items-center mb-6">
-                    <div class="w-24 h-24 rounded-full bg-slate-800 border-2 border-white/10 group-hover:border-brand p-1 transition-colors duration-300 mb-4">
-                        <div class="w-full h-full rounded-full bg-slate-700"></div>
+            <div class="glass-card p-8 rounded-3xl relative hover:-translate-y-2 transition-transform duration-300">
+                <div class="text-yellow-400 mb-4 text-lg">★★★★★</div>
+                <p class="text-slate-300 mb-8 italic">"Participar das imersões foi um divisor de águas na minha carreira. Fazer networking com os maiores nomes do bodybuilding do Brasil e aprender diretamente com eles não tem preço."</p>
+                <div class="flex items-center gap-4 border-t border-white/10 pt-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center text-white font-bold text-lg">R</div>
+                    <div>
+                        <p class="text-white font-bold">Rafael Costa</p>
+                        <p class="text-xs text-slate-500 uppercase tracking-widest">Coach / Treinador</p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors text-center">Igor Conterato</h3>
-                    <span class="inline-block px-3 py-1 bg-brand/10 border border-brand/20 text-brand-light text-xs font-bold rounded-full text-center">Fisiologia e Reabilitação</span>
                 </div>
-                <p class="text-sm text-slate-400 leading-relaxed relative z-10">
-                    Formado em Educação Física – Unesp – SP e Doutorado em Saúde Pública – USP – SP. Professor das pós em: Fisiologia do exercício aplicada a reabilitação e grupos especiais Biomecânica.
-                </p>
             </div>
-
-            <div class="group relative bg-slate-900/50 backdrop-blur-md border border-white/5 p-8 rounded-[2rem] hover:border-brand/40 hover:shadow-[0_15px_30px_-10px_rgba(3,123,255,0.15)] hover:-translate-y-2 transition-all duration-300 flex flex-col lg:col-start-2">
-                <div class="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem]"></div>
-                <div class="relative z-10 flex flex-col items-center mb-6">
-                    <div class="w-24 h-24 rounded-full bg-slate-800 border-2 border-white/10 group-hover:border-brand p-1 transition-colors duration-300 mb-4">
-                        <div class="w-full h-full rounded-full bg-slate-700"></div>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brand-light transition-colors text-center">Dr. Walter Krause Neto</h3>
-                    <span class="inline-block px-3 py-1 bg-brand/10 border border-brand/20 text-brand-light text-xs font-bold rounded-full text-center">"Treinador Olympia"</span>
-                </div>
-                <p class="text-sm text-slate-400 leading-relaxed relative z-10">
-                    O Dr. Walter Krause Neto é um PhD em Educação Física (UNIFESP) e pesquisador em Morfologia e Genética, focado na ciência do movimento. Ele atua como professor e “Treinador Olympia” de musculação, sendo uma referência por unir a ciência do treinamento com o Bodybuilding.
-                </p>
-            </div>
-
         </div>
     </section>
 
-    <section class="relative z-10 w-full py-16 md:py-24 bg-slate-950 border-y border-white/5 overflow-hidden">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-brand/5 blur-[150px] rounded-full pointer-events-none"></div>
-        <div class="absolute top-1/4 right-0 w-[300px] h-[300px] bg-brand-light/5 blur-[80px] rounded-full pointer-events-none"></div>
-        
-        <div class="max-w-4xl mx-auto px-5 text-center relative z-10">
-            
-            <div class="flex items-center justify-center gap-2 mb-4">
-                <span class="w-2 h-2 rounded-full bg-brand"></span>
-                <span class="text-brand-light text-sm font-bold tracking-widest uppercase">Prova Social</span>
-            </div>
-            
-            <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-12">Mais de 15.000 alunos falam sobre <br class="hidden md:block"/>nossos cursos e instrutores</h2>
-            
-            <div class="relative bg-slate-900/50 backdrop-blur-xl border border-white/10 p-10 md:p-14 rounded-[2.5rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] group hover:border-brand/40 transition-colors duration-500">
-                
-                <div class="absolute top-8 left-8 text-brand/20">
-                    <svg class="w-16 h-16 md:w-20 md:h-20" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-                </div>
-
-                <div class="flex items-center justify-center gap-1.5 text-brand-light mb-8 relative z-10">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                </div>
-
-                <p class="text-xl md:text-2xl text-slate-300 italic font-medium leading-relaxed relative z-10 mb-10">
-                    "A melhor pós da minha vida. Hoje eu aplico tudo na prática. Me sinto mais confiante como treinador e vi minha carreira decolar. O suporte e os professores são fora da curva."
-                </p>
-
-                <div class="flex items-center justify-center gap-4 relative z-10">
-                    <div class="w-14 h-14 rounded-full bg-slate-800 border-2 border-brand p-0.5 shrink-0">
-                        <div class="w-full h-full rounded-full bg-slate-700"></div> </div>
-                    <div class="text-left">
-                        <h4 class="text-white font-bold text-lg">Maria Clara Silva</h4>
-                        <p class="text-sm text-brand-light font-medium">Aluna Formada</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-20 pt-12 border-t border-white/5 group/partners">
-                <p class="text-sm font-semibold text-slate-500 uppercase tracking-widest mb-10">Mais de 20 parceiros confiáveis</p>
-                <div class="flex flex-wrap justify-center items-center gap-6 md:gap-12 opacity-60 grayscale group-hover/partners:grayscale-0 group-hover/partners:opacity-100 transition-all duration-500">
-                    <img src="img/parceiros/parceiro1.svg" alt="Parceiro 1" class="h-12 w-auto max-w-[140px] object-contain" />
-                    <img src="img/parceiros/parceiro2.svg" alt="Parceiro 2" class="h-12 w-auto max-w-[140px] object-contain" />
-                    <img src="img/parceiros/parceiro3.svg" alt="Parceiro 3" class="h-12 w-auto max-w-[140px] object-contain" />
-                    <img src="img/parceiros/parceiro4.svg" alt="Parceiro 4" class="h-12 w-auto max-w-[140px] object-contain" />
-                    <img src="img/parceiros/parceiro5.svg" alt="Parceiro 5" class="h-12 w-auto max-w-[140px] object-contain" />
-                    <img src="img/parceiros/parceiro6.svg" alt="Parceiro 6" class="h-12 w-auto max-w-[140px] object-contain" />
-                </div>
-            </div>
-            
-        </div>
-    </section>
-
-    <footer class="relative z-10 w-full bg-[#020617] bg-grid-pattern pt-16 pb-8 border-t border-white/5 overflow-hidden">
-        
-        <div class="absolute inset-0 bg-gradient-to-b from-brand/15 via-brand/8 to-brand/5 pointer-events-none"></div>
+    <footer class="relative z-10 w-full bg-slate-950 bg-grid-pattern pt-16 pb-8 border-t border-white/10 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-brand/10 via-brand/5 to-transparent pointer-events-none"></div>
         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-brand/5 blur-[100px] rounded-full pointer-events-none"></div>
-        <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-light/5 blur-[80px] rounded-full pointer-events-none"></div>
         
-        <div class="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16 mb-16 relative z-10">
-            
+        <div class="max-w-7xl mx-auto px-5 grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16 mb-16 relative z-10" data-aos="fade-in">
             <div class="md:col-span-12 lg:col-span-4">
                 <a href="#" class="flex items-center gap-2 mb-6 group inline-block">
-                    <img src="img/logoPta.svg" alt="Personal Trainer Academy - PTA" class="h-10 w-auto max-w-[200px] object-contain" />
+                    <img src="img/logoPta.svg" alt="Personal Trainer Academy - PTA" class="h-16 md:h-20 w-auto max-w-[280px] object-contain" />
                 </a>
-                <p class="text-[15px] text-[#9CA3AF] leading-relaxed max-w-sm">
+                <p class="text-[15px] text-slate-400 leading-relaxed max-w-sm">
                     A maior referência em pós-graduação para Personal Trainers do Brasil. Formando especialistas e líderes de mercado desde a primeira turma.
                 </p>
             </div>
             
             <div class="md:col-span-4 lg:col-span-2 lg:col-start-6">
-                <h4 class="text-[11px] font-bold text-[#6B7280] uppercase tracking-widest mb-6">Institucional</h4>
-                <ul class="space-y-4 text-[15px] text-[#D1D5DB]">
-                    <li><a href="#sobre" class="hover:text-white transition-colors duration-200">Sobre a Instituição</a></li>
-                    <li><a href="#cursos" class="hover:text-white transition-colors duration-200">Nossos Cursos</a></li>
-                    <li><a href="#professores" class="hover:text-white transition-colors duration-200">Corpo Docente</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors duration-200">Depoimentos</a></li>
+                <h4 class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-6">Institucional</h4>
+                <ul class="space-y-4 text-[15px] text-slate-300">
+                    <li><a href="#sobre" class="hover:text-brand-light transition-colors duration-200">Sobre a Instituição</a></li>
+                    <li><a href="#cursos" class="hover:text-brand-light transition-colors duration-200">Nossos Cursos</a></li>
+                    <li><a href="#depoimentos" class="hover:text-brand-light transition-colors duration-200">Alunos</a></li>
                 </ul>
             </div>
-
-            <div class="md:col-span-4 lg:col-span-2">
-                <h4 class="text-[11px] font-bold text-[#6B7280] uppercase tracking-widest mb-6">Legal</h4>
-                <ul class="space-y-4 text-[15px] text-[#D1D5DB]">
-                    <li><a href="#" class="hover:text-white transition-colors duration-200">Termos de Uso</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors duration-200">Política de Privacidade</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors duration-200">Certificação MEC</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors duration-200">Suporte ao Aluno</a></li>
-                </ul>
-            </div>
-
+            
             <div class="md:col-span-4 lg:col-span-3">
-                <h4 class="text-[11px] font-bold text-[#6B7280] uppercase tracking-widest mb-6">Fale Conosco</h4>
-                <div class="space-y-4 text-[15px] text-[#D1D5DB]">
+                <h4 class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-6">Fale Conosco</h4>
+                <div class="space-y-4 text-[15px] text-slate-300">
                     <p class="leading-relaxed">
                         Av. Rep. Argentina, 1237<br>
                         Água Verde, Curitiba — PR
                     </p>
-                    <p class="hover:text-white transition-colors duration-200 cursor-pointer pt-2">
+                    <p class="hover:text-brand-light transition-colors duration-200 cursor-pointer pt-2">
                         contato@personaltraineracademy.com.br
                     </p>
                 </div>
             </div>
-
         </div>
-
+        
         <div class="max-w-7xl mx-auto px-5 relative z-10">
-            <div class="border-t border-[#1F2937] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-[13px] text-[#6B7280]">
-                    &copy; 2026 Personal Trainer Academy. Todos os direitos reservados.
-                </p>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-[13px] text-slate-500">&copy; 2026 Personal Trainer Academy. Todos os direitos reservados.</p>
                 
-                <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
-                    <span class="text-[11px] font-bold text-[#9CA3AF] uppercase tracking-widest">Site Seguro</span>
+                <div class="flex items-center gap-4 opacity-60 hover:opacity-100 transition-opacity">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <span class="text-[13px] font-medium text-slate-300">Ambiente 100% Seguro</span>
+                    </div>
                 </div>
             </div>
         </div>
-        
     </footer>
 
+    <a href="https://wa.me/5511999999999" target="_blank" class="fixed bottom-6 right-6 z-[80] bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:shadow-[0_0_30px_rgba(34,197,94,0.6)] hover:-translate-y-1 transition-all duration-300">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.126.549 4.204 1.594 6.035L.12 24l6.095-1.464A11.97 11.97 0 0012.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm.012 21.996c-1.802 0-3.568-.485-5.118-1.403l-.367-.217-3.8.913.929-3.705-.239-.379a9.982 9.982 0 01-1.528-5.322c0-5.541 4.509-10.05 10.05-10.05 2.686 0 5.209 1.047 7.107 2.946 1.898 1.899 2.943 4.422 2.943 7.108 0 5.54-4.509 10.049-10.048 10.049zm5.508-7.53c-.302-.151-1.787-.882-2.064-.984-.277-.101-.479-.151-.68.151-.202.302-.78 1.008-.956 1.209-.176.202-.352.227-.655.076-1.512-.756-2.518-1.511-3.475-3.023-.277-.428.176-.403.755-1.561.101-.202.05-.378-.025-.529-.076-.151-.68-1.638-.932-2.242-.244-.588-.493-.508-.68-.517-.176-.009-.378-.009-.58-.009-.202 0-.529.076-.806.378-.277.302-1.058 1.033-1.058 2.519 0 1.486 1.083 2.923 1.234 3.124.151.202 2.14 3.275 5.186 4.585.73.302 1.309.479 1.763.605.73.202 1.385.176 1.913.101.579-.076 1.787-.73 2.039-1.436.252-.705.252-1.31.176-1.436-.076-.126-.277-.202-.58-.353z"></path></svg>
+    </a>
+
+    <div id="aviso-cookies" class="fixed bottom-0 left-0 right-0 z-[90] p-4 md:p-6 bg-slate-900 border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] hidden" aria-hidden="true">
+        <div class="container mx-auto max-w-4xl flex flex-col md:flex-row items-center gap-4 md:gap-6">
+            <p class="text-gray-300 text-sm flex-1">
+                Utilizamos cookies e dados pessoais de acordo com a <strong class="text-white">LGPD</strong> para melhorar sua experiência, analisar o tráfego e personalizar conteúdo. Ao continuar navegando, você concorda com nossa <a href="#" class="text-brand-primary hover:underline">Política de Privacidade</a> e uso de cookies.
+            </p>
+            <div class="flex gap-3 shrink-0">
+                <button type="button" id="btn-cookies-recusar" class="px-4 py-2 rounded-lg border border-white/20 text-gray-300 hover:bg-white/5 text-sm font-medium transition">Recusar</button>
+                <button type="button" id="btn-cookies-aceitar" class="px-6 py-2 rounded-lg bg-brand-primary text-white text-sm font-bold hover:shadow-[0_0_15px_#1E64F0] transition">Aceitar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inicializar Animações (Somente Desktop)
+        AOS.init({
+            disable: 'mobile', // Desativa em telas menores
+            once: true, // Executa animação apenas uma vez
+            offset: 100, // Disparo 100px antes do elemento aparecer
+            duration: 800 // Duração base
+        });
+
+        // Menu Mobile (Slide-in)
+        const btnOpen = document.getElementById('btn-mobile-open');
+        const btnClose = document.getElementById('btn-mobile-close');
+        const sidebar = document.getElementById('mobile-sidebar');
+        const overlay = document.getElementById('mobile-overlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('mobile-menu-active');
+            overlay.classList.toggle('overlay-active');
+        }
+
+        btnOpen.addEventListener('click', toggleMenu);
+        btnClose.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        // Fechar menu ao clicar num link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Script das Partículas (Hero)
+        const canvas = document.getElementById('hero-particles');
+        const ctx = canvas.getContext('2d');
+        const heroSection = document.getElementById('hero-section');
+
+        let width, height;
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        function initParticles() {
+            width = canvas.width = heroSection.offsetWidth;
+            height = canvas.height = heroSection.offsetHeight;
+            particles = [];
+            
+            const particleCount = Math.floor(width / 35);
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 1.5 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.4,
+                    speedY: (Math.random() - 0.5) * 0.4,
+                    opacity: Math.random() * 0.4 + 0.1
+                });
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                ctx.fill();
+
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (mouse.x != null && mouse.y != null) {
+                    let dx = mouse.x - p.x;
+                    let dy = mouse.y - p.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 120) {
+                        p.x -= dx * 0.015;
+                        p.y -= dy * 0.015;
+                    }
+                }
+
+                if (p.x < 0) p.x = width;
+                if (p.x > width) p.x = 0;
+                if (p.y < 0) p.y = height;
+                if (p.y > height) p.y = 0;
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        heroSection.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        heroSection.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        window.addEventListener('resize', initParticles);
+        initParticles();
+        animateParticles();
+
+        // Script para LGPD e Cookies
+        document.addEventListener('DOMContentLoaded', () => {
+            const avisoCookies = document.getElementById('aviso-cookies');
+            const btnAceitar = document.getElementById('btn-cookies-aceitar');
+            const btnRecusar = document.getElementById('btn-cookies-recusar');
+
+            if (!localStorage.getItem('cookies-consent')) {
+                avisoCookies.classList.remove('hidden');
+            }
+
+            btnAceitar.addEventListener('click', () => {
+                localStorage.setItem('cookies-consent', 'aceito');
+                avisoCookies.classList.add('hidden');
+            });
+
+            btnRecusar.addEventListener('click', () => {
+                localStorage.setItem('cookies-consent', 'recusado');
+                avisoCookies.classList.add('hidden');
+            });
+        });
+    </script>
 </body>
 </html>
